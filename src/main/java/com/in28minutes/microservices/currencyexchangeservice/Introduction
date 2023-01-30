@@ -1,0 +1,35 @@
+Now we want to play with API gateways, distributed tracing, circuit breakers and a lot of other things.
+To be able to play with all these features we need a couple more microservices which we'll call as Currency Conversion Microservice and Currency Exchange Microservice.
+
+Currency exchange microservice is all about the exchange rate of one currency in another. From it, we would expose a simple URL like /currency-exchange/from/USD/to/INR.
+
+What is the currency exchange rate of converting USD to INR ? And the currency exchange microservice would return back the conversion multiple saying One USD is 65 INR.
+The format of the response which comes back from the currency exchange microservice -
+
+{
+    "id":10001,
+    "from":"USD",
+    "to":"INR",
+    "conversionMultiple":65.00,
+    "environment":"8000 instance-id"
+}
+
+The other microservice that we set up is the currency conversion microservice. This is responsible for converting let's say 10 USD into INR.
+The URL structure would look something of this kind - /currency-conversion/from/USD/to/INR/quantity/10. So to convert 10 USD to INR, the response would be of kind -
+
+{
+    "id": 10001,
+    "from": "USD",
+    "to": "INR",
+    "conversionMultiple": 65.00,
+    "quantity": 10,
+    "totalCalculatedAmount": 650.00,
+    "environment": "8000 instance-id"
+}
+
+So it would return a conversion multiple, quantity and total calculated amount. Total calculated amount is the value of one USD multiplied by 10 i.e. 65 x 10 - 650.
+
+For currency conversion microservice to provide its features, it would call the currency exchange microservice so the currency conversion microservice will call the
+currency exchange microservice and ask value of USD in INR today. And then it would take the return value and multiply it with 10 and then return this response back.
+
+So these are two very, very simple microservices that we would be setting up. We'll start with currency exchange microservice first here.
